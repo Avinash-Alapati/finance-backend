@@ -17,3 +17,17 @@ export const getSummary = async (req, res) => {
     netBalance: income - expense,
   });
 };
+
+export const monthlyTrends = async (req, res) => {
+  const result = await Record.aggregate([
+    {
+      $group: {
+        _id: { $month: "$date" },
+        total: { $sum: "$amount" },
+      },
+    },
+    { $sort: { "_id": 1 } }
+  ]);
+
+  res.json(result);
+};

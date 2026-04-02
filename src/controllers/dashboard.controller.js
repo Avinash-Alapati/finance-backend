@@ -1,20 +1,30 @@
 import Record from "../models/record.model.js";
 
 export const getSummary = async (req, res) => {
-  const records = await Record.find();
+  const result = await Record.aggregate([
+    {
+      $group: {
+        _id: "$type",
+        total: { $sum: "$amount" }
+      }
+    }
+  ]);
 
   let income = 0;
   let expense = 0;
 
-  records.forEach((r) => {
-    if (r.type === "income") income += r.amount;
-    else expense += r.amount;
+  result.forEach(r => {
+    if (r._id === "income") income = r.total;
+    else expense = r.total;
   });
 
   res.json({
-    totalIncome: income,
-    totalExpense: expense,
-    netBalance: income - expense,
+    success: true,
+    data: {
+      totalIncome: income,
+      totalExpense: expense,
+      netBalance: income - expense
+    }
   });
 };
 

@@ -16,7 +16,12 @@ export const getRecords = async (req, res) => {
   if (type) filter.type = type;
   if (category) filter.category = category;
 
-  const records = await Record.find(filter);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
+  const records = await Record.find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit);
 
   res.json(records);
 };

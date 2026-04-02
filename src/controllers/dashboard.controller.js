@@ -1,7 +1,8 @@
 import Record from "../models/record.model.js";
 
 export const getSummary = async (req, res) => {
-  const result = await Record.aggregate([
+  try {
+    const result = await Record.aggregate([
     {
       $group: {
         _id: "$type",
@@ -26,18 +27,60 @@ export const getSummary = async (req, res) => {
       netBalance: income - expense
     }
   });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+  
 };
 
 export const monthlyTrends = async (req, res) => {
-  const result = await Record.aggregate([
+  try {
+    const result = await Record.aggregate([
+      {
+        $group: {
+          _id: {
+            month: { $month: "$date" },
+            type: "$type",
+          },
+          total: { $sum: "$amount" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+  res.json({
+    success: true,
+    data: result,
+  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+  
+};
+
+export const categorySummary = async (req, res) => {
+  try {
+    const result = await Record.aggregate([
     {
       $group: {
-        _id: { $month: "$date" },
-        total: { $sum: "$amount" },
-      },
-    },
-    { $sort: { "_id": 1 } }
+        _id: "$category",
+        total: { $sum: "$amount" }
+      }
+    }
   ]);
 
-  res.json(result);
+  res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+  
 };

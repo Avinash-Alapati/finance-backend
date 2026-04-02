@@ -19,9 +19,13 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.status(201).json(user);
+    const { password: _, ...safeUser } = user.toObject();
+    res.status(201).json(safeUser);
   } catch (err) {
-    res.json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
   }
 };
 
@@ -35,12 +39,19 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id, role: user.role }, "secret", {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
 
     res.json({ token });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
   }
 };

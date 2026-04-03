@@ -7,7 +7,7 @@ export const createRecord = async (req, res) => {
       createdBy: req.user._id,
     });
 
-    res.json({
+    res.status(201).json({
       success: true,
       data: record,
     });
@@ -34,10 +34,10 @@ export const getRecords = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit);
 
-    res.json({
-      success: true,
-      data: record,
-    });
+   res.status(201).json({
+     success: true,
+     data: records,
+   });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -60,9 +60,9 @@ export const updateRecord = async (req, res) => {
     await record.save();
 
     res.json({
-      success: true,
-      data: record,
-    });
+     success: true,
+     data: record,
+   });
   } catch (err) {
     res.status(500).json({
       success: false,

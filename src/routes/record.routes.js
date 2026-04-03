@@ -8,7 +8,7 @@ import {
 import { protect } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/role.middleware.js";
 import { validate } from "../validations/validate.js";
-import { recordSchema } from "../validations/record.validation.js";
+import { recordSchema, updateRecordSchema } from "../validations/record.validation.js";
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.patch(
   "/:id",
   protect,
   authorizeRoles("admin"),
-  validate(recordSchema),
+  validate(updateRecordSchema),
   updateRecord
 );
 

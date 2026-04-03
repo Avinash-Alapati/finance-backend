@@ -7,3 +7,11 @@ export const recordSchema = Joi.object({
   date: Joi.date().required(),
   notes: Joi.string().allow(""),
 });
+
+export const updateRecordSchema = Joi.object({
+  amount: Joi.number().positive(),
+  type: Joi.string().valid("income", "expense"),
+  category: Joi.string(),
+  date: Joi.date(),
+  notes: Joi.string().allow(""),
+});

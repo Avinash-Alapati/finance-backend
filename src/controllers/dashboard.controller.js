@@ -48,7 +48,7 @@ export const monthlyTrends = async (req, res) => {
           total: { $sum: "$amount" },
         },
       },
-      { $sort: { _id: 1 } },
+      { $sort: { "_id.month" : 1 } },
     ]);
 
   res.json({

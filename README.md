@@ -97,6 +97,8 @@ Query Params:
 
 ---
 
+## Postman - [Postman Link](https://avinashh-26-7448418.postman.co/workspace/Avinash-Personal~0526759a-9338-43b6-82a3-f1386fc0b1c4/collection/48447502-1bec6233-4d40-4502-8d2b-a4b82fc3c194?action=share&creator=48447502)
+
 ## API Response Format
 
 ### Success

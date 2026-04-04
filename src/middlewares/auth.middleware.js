@@ -4,7 +4,9 @@ import User from "../models/user.model.js";
 export const protect = async (req, res, next) => {
   let token = req.headers.authorization;
 
-  if (!token) return res.status(401).json({ success : false, message: "No token" });
+  if (!token){  
+    return res.status(401).json({ success : false, message: "No token" });
+  } 
 
   token = token.split(" ")[1];
 
